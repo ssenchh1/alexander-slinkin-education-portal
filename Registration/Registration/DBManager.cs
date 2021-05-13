@@ -1,55 +1,39 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
+using Newtonsoft.Json;
 
 namespace Registration
 {
     public class DBManager
     {
-        private IParser parser;
-        private IReader reader;
-        private IWriter writer;
-        private string path = @"C:\Users\ssenchh\Desktop\persons.csv";
+        private string path;
 
-        public DBManager(IParser parser)
+        public DBManager(string path)
         {
-            this.parser = parser;
+            this.path = path;
         }
 
         public void Write<T>(T obj)
         {
-            BinaryFormatter formatter = new BinaryFormatter();
+            var records = GetAllRecords<T>();
 
-            using (FileStream fs = new FileStream(@"C:\Users\ssenchh\Desktop\database.dat", FileMode.OpenOrCreate))
-            {
-                formatter.Serialize(fs, obj);
-            }
+            records.Add(obj);
 
-            var str = parser.Parse(obj);
-
-            using (StreamWriter sr = new StreamWriter(path))
-            {
-                sr.WriteLine(str);
-            }
+            File.WriteAllText(path, JsonConvert.SerializeObject(records));
         }
 
-        public List<string> GetAllRecords()
+        public List<T> GetAllRecords<T>()
         {
-            var content = "";
-            using (StreamReader sr = new StreamReader(path))
-            {
-                content = sr.ReadToEnd();
-            }
+            var json = File.ReadAllText(path);
 
-            return content.Split("\r\n").ToList();
+            var records = JsonConvert.DeserializeObject<List<T>>(json);
+
+            return records;
         }
 
-        public int GetObjectsCount()
+        public int GetObjectsCount<T>()
         {
-            return GetAllRecords().Count;
+            return GetAllRecords<T>().Count;
         }
     }
 }

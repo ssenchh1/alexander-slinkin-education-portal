@@ -16,23 +16,23 @@ namespace Registration
             ChooseAction();
         }
 
-        public void ChooseAction()
+        private void ChooseAction()
         {
             Console.WriteLine("Do you want to sign in or register a new account? 1 or 2");
-            var input = int.Parse(Console.ReadLine());
+            var input = Console.ReadLine();
 
             switch (input)
             {
-                case 1: SignIn();
+                case "1": SignIn();
                     break;
-                case 2: Register();
+                case "2": Register();
                     break;
                 default: ChooseAction();
                     break;
             }
         }
 
-        public void SignIn()
+        private void SignIn()
         {
             Console.Write("Your login: ");
             var login = Console.ReadLine();
@@ -40,7 +40,7 @@ namespace Registration
             Console.Write("Your password: ");
             var password = Console.ReadLine();
 
-            if (db.GetAllRecords().Exists(r => r.Split(",")[0] == login && r.Split(",")[1] == password))
+            if (db.GetAllRecords<User>().Exists(r => r.Login == login && r.Password == password))
             {
                 Console.WriteLine("You are signed in");
             }
@@ -50,7 +50,7 @@ namespace Registration
             }
         }
 
-        public void Register()
+        private void Register()
         {
             Console.Write("Create your login: ");
             var login = Console.ReadLine();
@@ -63,9 +63,9 @@ namespace Registration
 
             if (password == newPassword)
             {
-                if (!db.GetAllRecords().Exists(r => r.Split(",")[0] == login))
+                if (!db.GetAllRecords<User>().Exists(r => r.Login == login))
                 {
-                    db.Write(new User(){Login = login, Password = password});
+                    db.Write(new User(){Id = db.GetObjectsCount<User>() + 1, Login = login, Password = password});
                     Console.WriteLine("Now you are registered");
                 }
                 else
