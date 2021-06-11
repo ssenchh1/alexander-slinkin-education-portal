@@ -1,46 +1,60 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using EduPortal.Domain.Interfaces;
 using EduPortal.Domain.Models.Materials;
+using EduPortal.Infrastructure.Context;
 using EduPortal.Infrastructure.FileStorage;
 
 namespace EduPortal.Infrastructure.Repositories
 {
     public class MaterialRepository : IMaterialRepository
     {
-        private FileDBManager jsonDb;
+        private EducationalPortalContext db;
 
-        public MaterialRepository(FileDBManager dbManager)
+        public MaterialRepository(EducationalPortalContext dbcontext)
         {
-            jsonDb = dbManager;
+            db = dbcontext;
         }
 
         public void Add(Material obj)
         {
-            jsonDb.Write(obj);
+            db.Materials.Add(obj);
+            db.SaveChanges();
         }
 
-        public void Update(Material oldObj, Material newObj)
+        public void Update(Material obj)
         {
-            jsonDb.Update(oldObj, newObj);
+            db.Materials.Update(obj);
+            db.SaveChanges();
         }
 
         public void Delete(Material obj)
         {
-            jsonDb.Remove(obj);
+            db.Materials.Remove(obj);
+            db.SaveChanges();
         }
 
         public IEnumerable<Material> GetAll()
         {
-            return jsonDb.GetAllRecords<Material>();
+            return db.Materials;
         }
 
         public Material GetById(int id)
         {
-            return jsonDb.GetAllRecords<Material>().FirstOrDefault(m => m.Id == id);
+            return db.Materials.FirstOrDefault(m => m.Id == id);
+        }
+
+        public IEnumerable<Material> Get(Expression<Func<Material, bool>> filter)
+        {
+            IQueryable<Material> query = db.Materials;
+
+            query = query.Where(filter);
+
+            return query;
         }
     }
 }

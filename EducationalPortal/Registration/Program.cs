@@ -1,5 +1,5 @@
-﻿using EduPortal.UI.Views.Account;
-using EduPortal.Infrastructure.FileStorage;
+﻿using EduPortal.Infrastructure.Context;
+using EduPortal.UI.Views.Account;
 
 namespace Registration
 {
@@ -7,8 +7,8 @@ namespace Registration
     {
         static void Main(string[] args)
         {
-            var manager = new FileDBManager(@"C:\Users\ssenchh\Desktop\database.json");
-            var auth = new Authorization(manager);
+            var dbContext = new EducationalPortalContext();
+            var auth = new Authorization(dbContext);
             auth.Run();
         }
     }

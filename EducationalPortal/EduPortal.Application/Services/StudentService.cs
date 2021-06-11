@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using EduPortal.Application.Interfaces;
 using EduPortal.Application.ViewModels;
 using EduPortal.Domain.Interfaces;
@@ -62,7 +61,7 @@ namespace EduPortal.Application.Services
             }
             student.Courses.Add(course);
 
-            _studentRepository.Update(_studentRepository.GetById(student.Id), student);
+            _studentRepository.Update(student);
         }
 
         public CourseViewModel GetStudentCourses()
@@ -72,7 +71,7 @@ namespace EduPortal.Application.Services
                 Courses = new List<Course>()
             };
 
-            courses.Courses = student.Courses;
+            courses.Courses = student.Courses ?? courses.Courses;
 
             return courses;
         }

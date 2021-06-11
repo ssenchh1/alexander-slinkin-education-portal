@@ -1,44 +1,57 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using EduPortal.Domain.Interfaces;
 using EduPortal.Domain.Models.Users;
-using EduPortal.Infrastructure.FileStorage;
+using EduPortal.Infrastructure.Context;
 
 namespace EduPortal.Infrastructure.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private FileDBManager jsonDb;
+        private EducationalPortalContext db;
 
-        public UserRepository(FileDBManager dbManager)
+        public UserRepository(EducationalPortalContext dbcontext)
         {
-            jsonDb = dbManager;
+            db = dbcontext;
         }
 
         public void Add(User obj)
         {
-            jsonDb.Write(obj);
+            db.Users.Add(obj);
+            db.SaveChanges();
         }
 
-        public void Update(User oldObj, User newObj)
+        public void Update(User obj)
         {
-            jsonDb.Update(oldObj, newObj);
+            db.Users.Update(obj);
+            db.SaveChanges();
         }
 
         public void Delete(User obj)
         {
-            jsonDb.Remove(obj);
+            db.Remove(obj);
+            db.SaveChanges();
         }
 
         public IEnumerable<User> GetAll()
         {
-            return jsonDb.GetAllRecords<User>();
+            return db.Users;
         }
 
         public User GetById(int id)
         {
-            return jsonDb.GetAllRecords<User>().FirstOrDefault(u => u.Id == id);
+            return db.Users.FirstOrDefault(u => u.Id == id);
+        }
+
+        public IEnumerable<User> Get(Expression<Func<User, bool>> filter)
+        {
+            IQueryable<User> query = db.Users;
+
+            query = query.Where(filter);
+
+            return query;
         }
     }
 }

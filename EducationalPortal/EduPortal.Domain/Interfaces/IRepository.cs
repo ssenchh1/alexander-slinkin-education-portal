@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,12 +11,14 @@ namespace EduPortal.Domain.Interfaces
     {
         void Add(T obj);
 
-        void Update(T oldObj, T newObj);
+        void Update(T obj);
 
         void Delete(T obj);
 
         IEnumerable<T> GetAll();
 
         T GetById(int id);
+
+        IEnumerable<T> Get(Expression<Func<T, bool>> filter);
     }
 }

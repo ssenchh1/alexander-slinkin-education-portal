@@ -1,44 +1,58 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using EduPortal.Domain.Interfaces;
 using EduPortal.Domain.Models;
+using EduPortal.Infrastructure.Context;
 using EduPortal.Infrastructure.FileStorage;
 
 namespace EduPortal.Infrastructure.Repositories
 {
     public class CourseRepository : ICourseRepository
     {
-        private FileDBManager jsonDb;
+        private EducationalPortalContext db;
 
-        public CourseRepository(FileDBManager dbManager)
+        public CourseRepository(EducationalPortalContext dbcontext)
         {
-            jsonDb = dbManager;
+            db = dbcontext;
         }
 
         public void Add(Course obj)
         {
-            jsonDb.Write(obj);
+            db.Courses.Add(obj);
+            db.SaveChanges();
         }
 
-        public void Update(Course oldObj, Course newObj)
+        public void Update(Course obj)
         {
-            jsonDb.Update(oldObj, newObj);
+            db.Courses.Update(obj);
+            db.SaveChanges();
         }
 
         public void Delete(Course obj)
         {
-            jsonDb.Remove(obj);
+            db.Courses.Remove(obj);
+            db.SaveChanges();
         }
 
         public IEnumerable<Course> GetAll()
         {
-            return jsonDb.GetAllRecords<Course>();
+            return db.Courses;
         }
 
         public Course GetById(int id)
         {
-            return jsonDb.GetAllRecords<Course>().FirstOrDefault(c => c.Id == id);
+            return db.Courses.FirstOrDefault(c => c.Id == id);
+        }
+
+        public IEnumerable<Course> Get(Expression<Func<Course, bool>> filter)
+        {
+            IQueryable<Course> query = db.Courses;
+
+            query = query.Where(filter);
+
+            return query;
         }
     }
 }

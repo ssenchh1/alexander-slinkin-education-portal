@@ -164,6 +164,7 @@ namespace EduPortal.UI.Views.Account
 
             var video = new VideoMaterial()
             {
+                Category = "Video",
                 Name = material.Name,
                 Author = material.Author,
                 Quality = quality,
@@ -188,6 +189,7 @@ namespace EduPortal.UI.Views.Account
 
             var book = new DigitalBook()
             {
+                Category = "DigitalBook",
                 Name = material.Name,
                 Author = material.Author,
                 NumberOfPages = numberOfPages,
@@ -209,6 +211,7 @@ namespace EduPortal.UI.Views.Account
 
             var article = new Article()
             {
+                Category = "Article",
                 Name = material.Name,
                 Author = material.Author,
                 Source = source,

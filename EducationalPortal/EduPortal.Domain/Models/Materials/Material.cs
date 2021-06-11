@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using EduPortal.Domain.Models.Users;
 
 namespace EduPortal.Domain.Models.Materials
 {
@@ -8,6 +7,8 @@ namespace EduPortal.Domain.Models.Materials
         public int Id { get; set; }
 
         public string Name { get; set; }
+
+        public string Category { get; set; }
 
         public string Author { get; set; }
 

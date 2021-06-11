@@ -13,16 +13,23 @@ namespace EduPortal.Application.Services
     {
         private Mentor mentor;
 
+        private readonly IRepository<Article> _articleRepositiry;
+        private readonly IRepository<DigitalBook> _digitalBookRepository;
+        private readonly IRepository<VideoMaterial> _videoMaterialRepository;
         private readonly IMaterialRepository _materialRepository;
         private readonly ICourseRepository _courseRepository;
         private readonly IUserRepository _mentorRepository;
 
-        public MentorService(Mentor mentor, IUserRepository userRepository, IMaterialRepository materialRepository, ICourseRepository courseRepository)
+        public MentorService(Mentor mentor, IUserRepository userRepository, IMaterialRepository materialRepository, ICourseRepository courseRepository,
+            IRepository<Article> articleRepositiry, IRepository<DigitalBook> digitalBookRepository, IRepository<VideoMaterial> videoMaterialRepository)
         {
             this.mentor = mentor;
             _mentorRepository = userRepository;
             _courseRepository = courseRepository;
             _materialRepository = materialRepository;
+            _videoMaterialRepository = videoMaterialRepository;
+            _digitalBookRepository = digitalBookRepository;
+            _articleRepositiry = articleRepositiry;
         }
 
         public void CreateCourse(Course course)
@@ -38,20 +45,34 @@ namespace EduPortal.Application.Services
             }
             mentor.CreatedCourses.Add(course);
 
-            _mentorRepository.Update(_mentorRepository.GetById(mentor.Id), mentor);
+            _mentorRepository.Update(mentor);
         }
 
         public void CreateMaterial(Material material)
         {
-            _materialRepository.Add(material);
+            //_materialRepository.Add(material);
+
+            if (material is Article article)
+            {
+                _articleRepositiry.Add(article);
+            }
+            else if(material is DigitalBook dBook)
+            {
+                _digitalBookRepository.Add(dBook);
+            }
+            else if(material is VideoMaterial vMaterial)
+            {
+                _videoMaterialRepository.Add(vMaterial);
+            }
 
             if(mentor.CreatedMaterials == null)
             {
                 mentor.CreatedMaterials = new List<Material>();
             }
+
             mentor.CreatedMaterials.Add(material);
 
-            _mentorRepository.Update(_mentorRepository.GetById(mentor.Id), mentor);
+            _mentorRepository.Update(mentor);
         }
 
         public CourseViewModel GetAllCourses()
@@ -85,6 +106,16 @@ namespace EduPortal.Application.Services
 
         public Mentor GetMentor()
         {
+            if (mentor.CreatedCourses == null)
+            {
+                mentor.CreatedCourses = new List<Course>();
+            }
+
+            if (mentor.CreatedMaterials == null)
+            {
+                mentor.CreatedMaterials = new List<Material>();
+            }
+
             return mentor;
         }
     }

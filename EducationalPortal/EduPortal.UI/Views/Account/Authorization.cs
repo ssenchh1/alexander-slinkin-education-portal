@@ -1,20 +1,27 @@
 ﻿using System;
 using System.Linq;
 using EduPortal.Domain.Models.Users;
-using EduPortal.Infrastructure.FileStorage;
 using EduPortal.Application.Services;
 using EduPortal.Infrastructure.Repositories;
 using System.Threading;
+using EduPortal.Domain.Interfaces;
+using EduPortal.Infrastructure.Context;
 
 namespace EduPortal.UI.Views.Account
 {
     public class Authorization
     {
-        private readonly FileDBManager db;
+        private readonly EducationalPortalContext db;
+        private readonly IUserRepository users;
+        private readonly IRepository<Mentor> mentors;
+        private readonly IRepository<Student> students;
 
-        public Authorization(FileDBManager dbManager)
+        public Authorization(EducationalPortalContext dbManager)
         {
             db = dbManager;
+            users = new UserRepository(dbManager);
+            mentors = new MentorRepository(dbManager);
+            students = new StudentRepository(dbManager);
         }
 
         public void Run()
@@ -49,14 +56,14 @@ namespace EduPortal.UI.Views.Account
             Console.Write("Your password: ");
             var password = Console.ReadLine();
 
-            if (db.GetAllRecords<User>().Exists(r => r.Login == login && r.Password == password))
+            if (users.Get(u => u.Login == login && u.Password == password).Any())
             {
                 Console.WriteLine("You are signed in");
 
                 Thread.Sleep(1000);
                 Console.Clear();
 
-                var user = db.GetAllRecords<User>().First(u => u.Login == login);
+                var user = users.Get(u => u.Login == login).First();
 
                 Redirect(user);
             }
@@ -80,11 +87,12 @@ namespace EduPortal.UI.Views.Account
 
             if (password == newPassword)
             {
-                if (!db.GetAllRecords<User>().Exists(r => r.Login == login))
+                if (!users.Get(u => u.Login == login).Any())
                 {
-                    var user = new User() {Id = db.GetObjectsCount<User>() + 1, Login = login, Password = password};
+                    var user = new Student() {Login = login, Password = password, Role = "Student"};
+                    
+                    students.Add(user);
 
-                    db.Write(user);
                     Console.WriteLine("Now you are registered");
 
                     Thread.Sleep(1000);
@@ -104,13 +112,13 @@ namespace EduPortal.UI.Views.Account
         {
             if (user.Role == "Mentor")
             {
-                var mentor = db.GetAllRecords<Mentor>().FirstOrDefault(m => m.Id == user.Id);
+                var mentor = mentors.Get(m => m.Login == user.Login).First();
 
                 RedirectToMentorView(mentor);
             }
             else
             {
-                var student = db.GetAllRecords<Student>().FirstOrDefault(s => s.Id == user.Id);
+                var student = students.Get(u => u.Login == user.Login).First();
 
                 RedirectToStudentView(student);
             }
@@ -118,11 +126,9 @@ namespace EduPortal.UI.Views.Account
 
         private void RedirectToStudentView(User user)
         {
-            var usersDb = new FileDBManager(@"C:\Users\ssenchh\Desktop\database.json");
-            var userRepository = new UserRepository(usersDb);
-
-            var courseDb = new FileDBManager(@"C:\Users\ssenchh\Desktop\Courses.json");
-            var courseRepository = new CourseRepository(courseDb);
+            var userRepository = new UserRepository(db);
+            
+            var courseRepository = new CourseRepository(db);
 
             var studentService = new StudentService((Student)user, userRepository, courseRepository);
 
@@ -132,16 +138,20 @@ namespace EduPortal.UI.Views.Account
 
         private void RedirectToMentorView(User user)
         {
-            var usersDb = new FileDBManager(@"C:\Users\ssenchh\Desktop\database.json");
-            var userRepository = new UserRepository(usersDb);
+            var userRepository = new UserRepository(db);
+            
+            var courseRepository = new CourseRepository(db);
+            
+            var materialRepository = new MaterialRepository(db);
 
-            var courseDb = new FileDBManager(@"C:\Users\ssenchh\Desktop\Courses.json");
-            var courseRepository = new CourseRepository(courseDb);
+            var articleRepository = new ArticleRepository(db);
 
-            var materialDB = new FileDBManager(@"C:\Users\ssenchh\Desktop\Meterials.json");
-            var materialRepository = new MaterialRepository(materialDB);
+            var digitalBookRepository = new DigitalBookRepository(db);
 
-            var mentorService = new MentorService((Mentor)user ,userRepository, materialRepository, courseRepository);
+            var videoMaterialRepository = new VideoMaterialRepository(db);
+
+            var mentorService = new MentorService((Mentor)user ,userRepository, materialRepository, courseRepository, 
+                                                    articleRepository, digitalBookRepository, videoMaterialRepository);
 
             var mentorView = new MentorView(mentorService);
             mentorView.Run();
