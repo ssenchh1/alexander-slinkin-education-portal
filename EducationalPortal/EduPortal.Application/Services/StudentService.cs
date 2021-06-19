@@ -12,10 +12,10 @@ namespace EduPortal.Application.Services
     {
         private Student student;
 
-        private readonly ICourseRepository _courseRepository;
-        private readonly IUserRepository _studentRepository;
+        private readonly IRepository<Course> _courseRepository;
+        private readonly IRepository<User> _studentRepository;
 
-        public StudentService(Student student, IUserRepository userRepository, ICourseRepository courseRepository)
+        public StudentService(Student student, IRepository<User> userRepository, IRepository<Course> courseRepository)
         {
             this.student = student;
             _courseRepository = courseRepository;

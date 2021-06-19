@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using EduPortal.Domain.Interfaces;
 using EduPortal.Domain.Models.Materials;
 using EduPortal.Infrastructure.Context;
 
 namespace EduPortal.Infrastructure.Repositories
 {
-    public class VideoMaterialRepository : IVideoMaterialRepository
+    public class VideoMaterialRepository : IRepository<VideoMaterial>
     {
         private EducationalPortalContext db;
 

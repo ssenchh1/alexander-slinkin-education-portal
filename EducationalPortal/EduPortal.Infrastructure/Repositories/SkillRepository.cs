@@ -5,12 +5,10 @@ using System.Linq.Expressions;
 using EduPortal.Domain.Interfaces;
 using EduPortal.Domain.Models;
 using EduPortal.Infrastructure.Context;
-using EduPortal.Infrastructure.FileStorage;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EduPortal.Infrastructure.Repositories
 {
-    class SkillRepository : ISkillRepository
+    class SkillRepository : IRepository<Skill>
     {
         private EducationalPortalContext db;
 

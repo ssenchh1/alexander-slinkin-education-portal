@@ -5,11 +5,10 @@ using System.Linq.Expressions;
 using EduPortal.Domain.Interfaces;
 using EduPortal.Domain.Models;
 using EduPortal.Infrastructure.Context;
-using EduPortal.Infrastructure.FileStorage;
 
 namespace EduPortal.Infrastructure.Repositories
 {
-    public class CourseRepository : ICourseRepository
+    public class CourseRepository : IRepository<Course>
     {
         private EducationalPortalContext db;
 

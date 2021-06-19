@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 using EduPortal.Domain.Interfaces;
 using EduPortal.Domain.Models.Materials;
 using EduPortal.Infrastructure.Context;
-using EduPortal.Infrastructure.FileStorage;
 
 namespace EduPortal.Infrastructure.Repositories
 {
-    public class MaterialRepository : IMaterialRepository
+    public class MaterialRepository : IRepository<Material>
     {
         private EducationalPortalContext db;
 

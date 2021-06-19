@@ -8,7 +8,7 @@ using EduPortal.Infrastructure.Context;
 
 namespace EduPortal.Infrastructure.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : IRepository<User>
     {
         private EducationalPortalContext db;
 

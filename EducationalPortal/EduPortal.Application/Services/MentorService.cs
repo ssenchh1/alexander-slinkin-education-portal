@@ -16,11 +16,11 @@ namespace EduPortal.Application.Services
         private readonly IRepository<Article> _articleRepositiry;
         private readonly IRepository<DigitalBook> _digitalBookRepository;
         private readonly IRepository<VideoMaterial> _videoMaterialRepository;
-        private readonly IMaterialRepository _materialRepository;
-        private readonly ICourseRepository _courseRepository;
-        private readonly IUserRepository _mentorRepository;
+        private readonly IRepository<Material> _materialRepository;
+        private readonly IRepository<Course> _courseRepository;
+        private readonly IRepository<User> _mentorRepository;
 
-        public MentorService(Mentor mentor, IUserRepository userRepository, IMaterialRepository materialRepository, ICourseRepository courseRepository,
+        public MentorService(Mentor mentor, IRepository<User> userRepository, IRepository<Material> materialRepository, IRepository<Course> courseRepository,
             IRepository<Article> articleRepositiry, IRepository<DigitalBook> digitalBookRepository, IRepository<VideoMaterial> videoMaterialRepository)
         {
             this.mentor = mentor;

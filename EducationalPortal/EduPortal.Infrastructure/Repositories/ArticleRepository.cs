@@ -10,7 +10,7 @@ using EduPortal.Infrastructure.Context;
 
 namespace EduPortal.Infrastructure.Repositories
 {
-    public class ArticleRepository : IArticleRepository
+    public class ArticleRepository : IRepository<Article>
     {
         private EducationalPortalContext db;
 

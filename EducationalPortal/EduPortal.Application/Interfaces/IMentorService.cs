@@ -7,10 +7,10 @@ namespace EduPortal.Application.Interfaces
 {
     public interface IMentorService : IUserService
     {
-        public void CreateCourse(Course course);
+        void CreateCourse(Course course);
 
-        public void CreateMaterial(Material material);
+        void CreateMaterial(Material material);
 
-        public Mentor GetMentor();
+        Mentor GetMentor();
     }
 }

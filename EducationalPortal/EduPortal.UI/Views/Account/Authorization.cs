@@ -12,7 +12,7 @@ namespace EduPortal.UI.Views.Account
     public class Authorization
     {
         private readonly EducationalPortalContext db;
-        private readonly IUserRepository users;
+        private readonly IRepository<User> users;
         private readonly IRepository<Mentor> mentors;
         private readonly IRepository<Student> students;
 
