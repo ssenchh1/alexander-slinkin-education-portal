@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using EduPortal.Application.Interfaces;
 using EduPortal.Application.ViewModels;
 using EduPortal.Domain.Interfaces;
@@ -80,7 +79,7 @@ namespace EduPortal.Application.Services
             //todo
             var courses = new CourseViewModel()
             {
-                Courses = _courseRepository.GetAll()
+                Courses = _courseRepository.Get(c => true)
             };
 
             return courses;

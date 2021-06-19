@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using EduPortal.Domain.Interfaces;
 using EduPortal.Domain.Models.Materials;
 using EduPortal.Infrastructure.Context;
@@ -35,11 +33,6 @@ namespace EduPortal.Infrastructure.Repositories
         {
             db.Articles.Remove(obj);
             db.SaveChanges();
-        }
-
-        public IEnumerable<Article> GetAll()
-        {
-            return db.Articles;
         }
 
         public Article GetById(int id)

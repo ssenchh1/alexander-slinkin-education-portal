@@ -37,11 +37,6 @@ namespace EduPortal.Infrastructure.Repositories
             db.SaveChanges();
         }
 
-        public IEnumerable<DigitalBook> GetAll()
-        {
-            return db.DigitalBooks;
-        }
-
         public DigitalBook GetById(int id)
         {
             return db.DigitalBooks.First(b => b.Id == id);

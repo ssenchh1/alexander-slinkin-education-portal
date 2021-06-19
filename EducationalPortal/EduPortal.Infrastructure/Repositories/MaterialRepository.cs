@@ -37,11 +37,6 @@ namespace EduPortal.Infrastructure.Repositories
             db.SaveChanges();
         }
 
-        public IEnumerable<Material> GetAll()
-        {
-            return db.Materials;
-        }
-
         public Material GetById(int id)
         {
             return db.Materials.FirstOrDefault(m => m.Id == id);

@@ -38,11 +38,6 @@ namespace EduPortal.Infrastructure.Repositories
             db.SaveChanges();
         }
 
-        public IEnumerable<Mentor> GetAll()
-        {
-            return db.Mentors;
-        }
-
         public Mentor GetById(int id)
         {
             return db.Mentors.First(m => m.Id == id);

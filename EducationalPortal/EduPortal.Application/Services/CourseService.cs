@@ -18,7 +18,7 @@ namespace EduPortal.Application.Services
         {
             return new CourseViewModel()
             {
-                Courses = _courseRepository.GetAll()
+                Courses = _courseRepository.Get(c => true)
             };
         }
     }

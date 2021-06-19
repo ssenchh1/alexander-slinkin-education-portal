@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EduPortal.Domain.Interfaces
 {
@@ -14,8 +11,6 @@ namespace EduPortal.Domain.Interfaces
         void Update(T obj);
 
         void Delete(T obj);
-
-        IEnumerable<T> GetAll();
 
         T GetById(int id);
 

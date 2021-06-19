@@ -35,11 +35,6 @@ namespace EduPortal.Infrastructure.Repositories
             db.SaveChanges();
         }
 
-        public IEnumerable<User> GetAll()
-        {
-            return db.Users;
-        }
-
         public User GetById(int id)
         {
             return db.Users.FirstOrDefault(u => u.Id == id);

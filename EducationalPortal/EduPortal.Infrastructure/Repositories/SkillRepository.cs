@@ -34,11 +34,6 @@ namespace EduPortal.Infrastructure.Repositories
             db.Skills.Remove(obj);
         }
 
-        public IEnumerable<Skill> GetAll()
-        {
-            return db.Skills;
-        }
-
         public Skill GetById(int id)
         {
             return db.Skills.First(i => i.Id == id);

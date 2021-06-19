@@ -35,11 +35,6 @@ namespace EduPortal.Infrastructure.Repositories
             db.SaveChanges();
         }
 
-        public IEnumerable<VideoMaterial> GetAll()
-        {
-            return db.VideoMaterials;
-        }
-
         public VideoMaterial GetById(int id)
         {
             return db.VideoMaterials.First(v => v.Id == id);
