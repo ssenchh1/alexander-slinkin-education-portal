@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using EduPortal.Domain.Interfaces;
 using EduPortal.Domain.Models.Materials;
 using EduPortal.Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace EduPortal.Infrastructure.Repositories
 {
@@ -19,30 +20,30 @@ namespace EduPortal.Infrastructure.Repositories
             db = dbcontext;
         }
 
-        public void Add(Material obj)
+        public async Task Add(Material obj)
         {
-            db.Materials.Add(obj);
-            db.SaveChanges();
+            await db.Materials.AddAsync(obj);
+            await db.SaveChangesAsync();
         }
 
-        public void Update(Material obj)
+        public async Task Update(Material obj)
         {
             db.Materials.Update(obj);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
-        public void Delete(Material obj)
+        public async Task Delete(Material obj)
         {
             db.Materials.Remove(obj);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
-        public Material GetById(int id)
+        public async Task<Material> GetById(int id)
         {
-            return db.Materials.FirstOrDefault(m => m.Id == id);
+            return await db.Materials.FirstOrDefaultAsync(m => m.Id == id);
         }
 
-        public IEnumerable<Material> Get(Expression<Func<Material, bool>> filter)
+        public IQueryable<Material> Get(Expression<Func<Material, bool>> filter)
         {
             IQueryable<Material> query = db.Materials;
 

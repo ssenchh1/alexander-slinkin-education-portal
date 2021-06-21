@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Configuration;
 using EduPortal.Domain.Models;
 using EduPortal.Domain.Models.Materials;
 using EduPortal.Domain.Models.Users;
@@ -31,7 +27,8 @@ namespace EduPortal.Infrastructure.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-3RQFHH4\SQLEXPRESS01;Initial Catalog=EducationPortal;Integrated Security=True");
+            var conectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            optionsBuilder.UseSqlServer(conectionString);
         }
     }
 }

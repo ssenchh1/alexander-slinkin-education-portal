@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using EduPortal.Domain.Interfaces;
 using EduPortal.Domain.Models;
 using EduPortal.Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace EduPortal.Infrastructure.Repositories
 {
@@ -17,30 +19,30 @@ namespace EduPortal.Infrastructure.Repositories
             db = dbcontext;
         }
 
-        public void Add(Course obj)
+        public async Task Add(Course obj)
         {
-            db.Courses.Add(obj);
-            db.SaveChanges();
+            await db.Courses.AddAsync(obj);
+            await db.SaveChangesAsync();
         }
 
-        public void Update(Course obj)
+        public async Task Update(Course obj)
         {
             db.Courses.Update(obj);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
-        public void Delete(Course obj)
+        public async Task Delete(Course obj)
         {
             db.Courses.Remove(obj);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
-        public Course GetById(int id)
+        public async Task<Course> GetById(int id)
         {
-            return db.Courses.FirstOrDefault(c => c.Id == id);
+            return await db.Courses.FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public IEnumerable<Course> Get(Expression<Func<Course, bool>> filter)
+        public IQueryable<Course> Get(Expression<Func<Course, bool>> filter)
         {
             IQueryable<Course> query = db.Courses;
 

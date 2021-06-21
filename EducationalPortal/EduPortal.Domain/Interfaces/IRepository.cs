@@ -1,19 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace EduPortal.Domain.Interfaces
 {
     public interface IRepository<T>
     {
-        void Add(T obj);
+        Task Add(T obj);
 
-        void Update(T obj);
+        Task Update(T obj);
 
-        void Delete(T obj);
+        Task Delete(T obj);
 
-        T GetById(int id);
+        Task<T> GetById(int id);
 
-        IEnumerable<T> Get(Expression<Func<T, bool>> filter);
+        IQueryable<T> Get(Expression<Func<T, bool>> filter);
     }
 }

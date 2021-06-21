@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using EduPortal.Domain.Interfaces;
 using EduPortal.Domain.Models.Users;
 using EduPortal.Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace EduPortal.Infrastructure.Repositories
 {
@@ -17,30 +19,30 @@ namespace EduPortal.Infrastructure.Repositories
             db = dbcontext;
         }
 
-        public void Add(User obj)
+        public async Task Add(User obj)
         {
-            db.Users.Add(obj);
-            db.SaveChanges();
+            await db.Users.AddAsync(obj);
+            await db.SaveChangesAsync();
         }
 
-        public void Update(User obj)
+        public async Task Update(User obj)
         {
             db.Users.Update(obj);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
-        public void Delete(User obj)
+        public async Task Delete(User obj)
         {
             db.Remove(obj);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
-        public User GetById(int id)
+        public async Task<User> GetById(int id)
         {
-            return db.Users.FirstOrDefault(u => u.Id == id);
+            return await db.Users.FirstOrDefaultAsync(u => u.Id == id);
         }
 
-        public IEnumerable<User> Get(Expression<Func<User, bool>> filter)
+        public IQueryable<User> Get(Expression<Func<User, bool>> filter)
         {
             IQueryable<User> query = db.Users;
 

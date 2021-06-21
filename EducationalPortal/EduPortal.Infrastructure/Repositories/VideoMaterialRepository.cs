@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using EduPortal.Domain.Interfaces;
 using EduPortal.Domain.Models.Materials;
 using EduPortal.Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace EduPortal.Infrastructure.Repositories
 {
@@ -17,30 +18,30 @@ namespace EduPortal.Infrastructure.Repositories
             db = context;
         }
 
-        public void Add(VideoMaterial obj)
+        public async Task Add(VideoMaterial obj)
         {
-            db.VideoMaterials.Add(obj);
-            db.SaveChanges();
+            await db.VideoMaterials.AddAsync(obj);
+            await db.SaveChangesAsync();
         }
 
-        public void Update(VideoMaterial obj)
+        public async Task Update(VideoMaterial obj)
         {
             db.VideoMaterials.Update(obj);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
-        public void Delete(VideoMaterial obj)
+        public async Task Delete(VideoMaterial obj)
         {
             db.VideoMaterials.Remove(obj);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
-        public VideoMaterial GetById(int id)
+        public async Task<VideoMaterial> GetById(int id)
         {
-            return db.VideoMaterials.First(v => v.Id == id);
+            return await db.VideoMaterials.FirstAsync(v => v.Id == id);
         }
 
-        public IEnumerable<VideoMaterial> Get(Expression<Func<VideoMaterial, bool>> filter)
+        public IQueryable<VideoMaterial> Get(Expression<Func<VideoMaterial, bool>> filter)
         {
             IQueryable<VideoMaterial> query = db.VideoMaterials;
 

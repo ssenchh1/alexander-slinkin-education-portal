@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using EduPortal.Domain.Interfaces;
 using EduPortal.Domain.Models.Materials;
 using EduPortal.Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace EduPortal.Infrastructure.Repositories
 {
@@ -19,30 +20,30 @@ namespace EduPortal.Infrastructure.Repositories
             db = context;
         }
 
-        public void Add(DigitalBook obj)
+        public async Task Add(DigitalBook obj)
         {
-            db.DigitalBooks.Add(obj);
-            db.SaveChanges();
+            await db.DigitalBooks.AddAsync(obj);
+            await db.SaveChangesAsync();
         }
 
-        public void Update(DigitalBook obj)
+        public async Task Update(DigitalBook obj)
         {
             db.DigitalBooks.Update(obj);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
-        public void Delete(DigitalBook obj)
+        public async Task Delete(DigitalBook obj)
         {
             db.DigitalBooks.Remove(obj);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
-        public DigitalBook GetById(int id)
+        public async Task<DigitalBook> GetById(int id)
         {
-            return db.DigitalBooks.First(b => b.Id == id);
+            return await db.DigitalBooks.FirstAsync(b => b.Id == id);
         }
 
-        public IEnumerable<DigitalBook> Get(Expression<Func<DigitalBook, bool>> filter)
+        public IQueryable<DigitalBook> Get(Expression<Func<DigitalBook, bool>> filter)
         {
             IQueryable<DigitalBook> query = db.DigitalBooks;
 
