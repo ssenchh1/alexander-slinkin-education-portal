@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EduPortal.Infrastructure.Repositories
 {
-    public class MentorRepository : IRepository<Mentor>
+    public class MentorRepository : IUserRepository<Mentor>
     {
         private EducationalPortalContext db;
 
@@ -21,25 +21,25 @@ namespace EduPortal.Infrastructure.Repositories
         }
 
 
-        public async Task Add(Mentor obj)
+        public async Task AddAsync(Mentor obj)
         {
             await db.Mentors.AddAsync(obj);
             await db.SaveChangesAsync();
         }
 
-        public async Task Update(Mentor obj)
+        public async Task UpdateAsync(Mentor obj)
         {
             db.Mentors.Update(obj);
             await db.SaveChangesAsync();
         }
 
-        public async Task Delete(Mentor obj)
+        public async Task DeleteAsync(Mentor obj)
         {
             db.Mentors.Remove(obj);
             await db.SaveChangesAsync();
         }
 
-        public async Task<Mentor> GetById(int id)
+        public async Task<Mentor> GetByIdAsync(string id)
         {
             return await db.Mentors.FirstAsync(m => m.Id == id);
         }
@@ -48,9 +48,14 @@ namespace EduPortal.Infrastructure.Repositories
         {
             IQueryable<Mentor> query = db.Mentors;
 
-            query = query.Where(filter);
+            query = query.Where(filter).Include(m => m.CreatedCourses);
 
             return query;
+        }
+
+        Task<IEnumerable<Mentor>> IUserRepository<Mentor>.Get(Expression<Func<Mentor, bool>> filter)
+        {
+            throw new NotImplementedException();
         }
     }
 }

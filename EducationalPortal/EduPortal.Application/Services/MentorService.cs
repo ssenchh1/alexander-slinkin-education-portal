@@ -1,121 +1,85 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using EduPortal.Application.Interfaces;
 using EduPortal.Application.ViewModels;
 using EduPortal.Domain.Interfaces;
 using EduPortal.Domain.Models;
 using EduPortal.Domain.Models.Materials;
-using EduPortal.Domain.Models.Users;
 
 namespace EduPortal.Application.Services
 {
     public class MentorService : IMentorService
     {
-        private Mentor mentor;
-
-        private readonly IRepository<Article> _articleRepositiry;
-        private readonly IRepository<DigitalBook> _digitalBookRepository;
-        private readonly IRepository<VideoMaterial> _videoMaterialRepository;
         private readonly IRepository<Material> _materialRepository;
         private readonly IRepository<Course> _courseRepository;
-        private readonly IRepository<User> _mentorRepository;
 
-        public MentorService(Mentor mentor, IRepository<User> userRepository, IRepository<Material> materialRepository, IRepository<Course> courseRepository,
-            IRepository<Article> articleRepositiry, IRepository<DigitalBook> digitalBookRepository, IRepository<VideoMaterial> videoMaterialRepository)
+        public MentorService(IRepository<Material> materialRepository, IRepository<Course> courseRepository)
         {
-            this.mentor = mentor;
-            _mentorRepository = userRepository;
-            _courseRepository = courseRepository;
             _materialRepository = materialRepository;
-            _videoMaterialRepository = videoMaterialRepository;
-            _digitalBookRepository = digitalBookRepository;
-            _articleRepositiry = articleRepositiry;
+            _courseRepository = courseRepository;
         }
 
-        public void CreateCourse(Course course)
+        public Task<IEnumerable<CourseViewModel>> GetUserCourses(string userId)
         {
-            //todo
-            //var course = new Course();
-
-            _courseRepository.Add(course);
-
-            if (mentor.CreatedCourses == null)
-            {
-                mentor.CreatedCourses = new List<Course>();
-            }
-            mentor.CreatedCourses.Add(course);
-
-            _mentorRepository.Update(mentor);
+            throw new NotImplementedException();
         }
 
-        public void CreateMaterial(Material material)
+        public Task<IEnumerable<CourseViewModel>> GetFinishedCourses(string userId)
         {
-            //_materialRepository.Add(material);
-
-            if (material is Article article)
-            {
-                _articleRepositiry.Add(article);
-            }
-            else if(material is DigitalBook dBook)
-            {
-                _digitalBookRepository.Add(dBook);
-            }
-            else if(material is VideoMaterial vMaterial)
-            {
-                _videoMaterialRepository.Add(vMaterial);
-            }
-
-            if(mentor.CreatedMaterials == null)
-            {
-                mentor.CreatedMaterials = new List<Material>();
-            }
-
-            mentor.CreatedMaterials.Add(material);
-
-            _mentorRepository.Update(mentor);
+            throw new NotImplementedException();
         }
 
-        public CourseViewModel GetAllCourses()
+        public Task<UserProfileViewModel> GetProfile(string userId)
         {
-            //todo
-            var courses = new CourseViewModel()
+            throw new NotImplementedException();
+        }
+
+        public async Task CreateArticleAsync(CreateArticleViewModel model, string authorId)
+        {
+            var article = new Article()
             {
-                Courses = _courseRepository.Get(c => true)
+                Name = model.Name, Text = model.Text, Source = model.Source, ProvidedSkills = model.ProvidedSkills,
+                Category = model.Category, Date = model.Date, AuthorId = authorId
             };
 
-            return courses;
+            await _materialRepository.AddAsync(article);
         }
 
-        public UserProfileViewModel GetProfile()
+        public async Task CreateBookAsync(CreateBookViewModel model, string authorId)
         {
-            var properties = mentor.GetType().GetProperties();
-            Dictionary<string, object> props = new Dictionary<string, object>();
-
-            foreach (var propertyInfo in properties)
+            var book = new DigitalBook()
             {
-                props.Add(propertyInfo.Name, propertyInfo.GetValue(mentor));
-            }
-
-            var profile = new UserProfileViewModel()
-            {
-                Fields = props
+                Name = model.Name, Format = model.Format, Text  = model.Text, NumberOfPages = model.NumberOfPages, Year = model.Year,
+                Category = model.Category, ProvidedSkills = model.ProvidedSkills, AuthorId = authorId
             };
 
-            return profile;
+            await _materialRepository.AddAsync(book);
         }
 
-        public Mentor GetMentor()
+        public async Task CreateVideoAsync(CreateVideoViewModel model, string authorId)
         {
-            if (mentor.CreatedCourses == null)
+            var video = new VideoMaterial()
             {
-                mentor.CreatedCourses = new List<Course>();
-            }
+                Name = model.Name, Category = model.Category, Length = model.Length, ProvidedSkills = model.ProvidedSkills, AuthorId = authorId
+            };
 
-            if (mentor.CreatedMaterials == null)
-            {
-                mentor.CreatedMaterials = new List<Material>();
-            }
+            await _materialRepository.AddAsync(video);
+        }
 
-            return mentor;
+        public async Task CreateCourseAsync(CreateCourseViewModel model, string authorId)
+        {
+            var course = new Course()
+                {Name = model.Name, Description = model.Description, Materials = model.Materials, AuthorId = authorId};
+
+            await _courseRepository.AddAsync(course);
+        }
+
+        public Task UpdateCourseAsync(CreateCourseViewModel model, string authorId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

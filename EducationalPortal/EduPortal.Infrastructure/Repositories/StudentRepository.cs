@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using EduPortal.Domain.Interfaces;
@@ -10,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EduPortal.Infrastructure.Repositories
 {
-    public class StudentRepository : IRepository<Student>
+    public class StudentRepository : IUserRepository<Student>
     {
         private EducationalPortalContext db;
 
@@ -19,36 +18,32 @@ namespace EduPortal.Infrastructure.Repositories
             db = dbcontext;
         }
 
-        public async Task Add(Student obj)
+        public async Task AddAsync(Student obj)
         {
             await db.Students.AddAsync(obj);
             await db.SaveChangesAsync();
         }
 
-        public async Task Update(Student obj)
+        public async Task UpdateAsync(Student obj)
         {
             db.Students.Update(obj);
             await db.SaveChangesAsync();
         }
 
-        public async Task Delete(Student obj)
+        public async Task DeleteAsync(Student obj)
         {
             db.Students.Remove(obj);
             await db.SaveChangesAsync();
         }
 
-        public async Task<Student> GetById(int id)
+        public async Task<Student> GetByIdAsync(string id)
         {
             return await db.Students.FirstAsync(s => s.Id == id);
         }
 
-        public IQueryable<Student> Get(Expression<Func<Student, bool>> filter)
+        public Task<IEnumerable<Student>> Get(Expression<Func<Student, bool>> filter = null)
         {
-            IQueryable<Student> query = db.Students;
-
-            query = query.Where(filter);
-
-            return query;
+            throw new NotImplementedException();
         }
     }
 }

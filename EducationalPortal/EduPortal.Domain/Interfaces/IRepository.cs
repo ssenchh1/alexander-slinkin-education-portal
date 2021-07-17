@@ -8,14 +8,16 @@ namespace EduPortal.Domain.Interfaces
 {
     public interface IRepository<T>
     {
-        Task Add(T obj);
+        Task AddAsync(T obj);
 
-        Task Update(T obj);
+        Task UpdateAsync(T obj);
 
-        Task Delete(T obj);
+        Task DeleteAsync(T obj);
 
-        Task<T> GetById(int id);
+        Task<T> GetByIdAsync(int id);
 
-        IQueryable<T> Get(Expression<Func<T, bool>> filter);
+        Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>> filter = null, string includeProperties = "", Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, int skip = 0, int take = 0);
+
+        Task<PagedList<T>> GetPagedAsync(int pageNumber = 0, int pageSize = 0, Expression<Func<T, bool>> filter = null, string includeProperties = "", Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null);
     }
 }

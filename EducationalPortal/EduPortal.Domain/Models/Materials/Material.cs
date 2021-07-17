@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using EduPortal.Domain.Models.Joining;
+using EduPortal.Domain.Models.Users;
 
 namespace EduPortal.Domain.Models.Materials
 {
@@ -10,8 +12,14 @@ namespace EduPortal.Domain.Models.Materials
 
         public string Category { get; set; }
 
-        public string Author { get; set; }
+        public string AuthorId { get; set; }
 
-        public List<Skill> ProvidedSkills { get; set; }
+        public Mentor Author { get; set; }
+
+        public virtual List<Skill> ProvidedSkills { get; set; }
+
+        public List<Course> Courses { get; set; }
+
+        public List<CourseMaterial> CourseMaterials { get; set; }
     }
 }

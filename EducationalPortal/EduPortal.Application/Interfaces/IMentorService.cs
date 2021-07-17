@@ -1,16 +1,18 @@
-﻿using System;
-using EduPortal.Domain.Models;
-using EduPortal.Domain.Models.Materials;
-using EduPortal.Domain.Models.Users;
+﻿using System.Threading.Tasks;
+using EduPortal.Application.ViewModels;
 
 namespace EduPortal.Application.Interfaces
 {
     public interface IMentorService : IUserService
     {
-        void CreateCourse(Course course);
+        Task CreateArticleAsync(CreateArticleViewModel model, string authorId);
 
-        void CreateMaterial(Material material);
+        Task CreateBookAsync(CreateBookViewModel model, string authorId);
 
-        Mentor GetMentor();
+        Task CreateVideoAsync(CreateVideoViewModel model, string authorId);
+
+        Task CreateCourseAsync(CreateCourseViewModel model, string authorId);
+
+        Task UpdateCourseAsync(CreateCourseViewModel model, string authorId);
     }
 }

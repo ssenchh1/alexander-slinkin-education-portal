@@ -1,11 +1,15 @@
-﻿using EduPortal.Application.ViewModels;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using EduPortal.Application.ViewModels;
 
 namespace EduPortal.Application.Interfaces
 {
     public interface IUserService
     {
-        CourseViewModel GetAllCourses();
+        Task<IEnumerable<CourseViewModel>> GetUserCourses(string userId);
 
-        UserProfileViewModel GetProfile();
+        Task<IEnumerable<CourseViewModel>> GetFinishedCourses(string userId);
+
+        Task<UserProfileViewModel> GetProfile(string userId);
     }
 }

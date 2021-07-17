@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using EduPortal.Application.Interfaces;
 using EduPortal.Application.ViewModels;
 using EduPortal.Domain.Interfaces;
@@ -22,12 +23,12 @@ namespace EduPortal.Application.Services
             _studentRepository = userRepository;
         }
 
-        public CourseViewModel GetAllCourses()
+        public async Task<CoursesViewModel> GetAllCourses()
         {
             //todo
-            var courses = new CourseViewModel()
+            var courses = new CoursesViewModel()
             {
-                Courses = _courseRepository.Get(c => true)
+                //Courses = await _courseRepository.Get()
             };
 
             return courses;
@@ -45,28 +46,29 @@ namespace EduPortal.Application.Services
 
             var profile = new UserProfileViewModel()
             {
-                Fields = props
+                //Fields = props
             };
 
             return profile;
         }
 
-        public void EnrollCourse(int courseId)
+        public async void EnrollCourse(int courseId)
         {
-            var course = _courseRepository.GetById(courseId);
+            var course = await _courseRepository.GetByIdAsync(courseId);
 
             if(student.Courses == null)
             {
                 student.Courses = new List<Course>();
             }
+            
             student.Courses.Add(course);
 
-            _studentRepository.Update(student);
+            await _studentRepository.UpdateAsync(student);
         }
 
-        public CourseViewModel GetStudentCourses()
+        public CoursesViewModel GetStudentCourses()
         {
-            var courses = new CourseViewModel()
+            var courses = new CoursesViewModel()
             {
                 Courses = new List<Course>()
             };
@@ -76,12 +78,27 @@ namespace EduPortal.Application.Services
             return courses;
         }
 
-        public CourseViewModel GetAvailableCourses()
+        public CoursesViewModel GetAvailableCourses()
         {
             throw new NotImplementedException();
         }
 
-        public CourseViewModel GetFinishedCourses()
+        public CoursesViewModel GetFinishedCourses()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<CourseViewModel>> GetUserCourses(string userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<CourseViewModel>> GetFinishedCourses(string userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<UserProfileViewModel> GetProfile(string userId)
         {
             throw new NotImplementedException();
         }

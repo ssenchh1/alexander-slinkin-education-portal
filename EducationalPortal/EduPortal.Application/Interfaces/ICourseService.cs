@@ -1,14 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using EduPortal.Application.ViewModels;
+using EduPortal.Domain;
+using EduPortal.Domain.Models;
 
 namespace EduPortal.Application.Interfaces
 {
     public interface ICourseService
     {
-        CourseViewModel GetCourses();
+        Task<CoursesViewModel> GetCourses();
+
+        Task<PagedList<Course>> GetCoursesPaged(int pageNumber, int pageSize);
+
+        Task<CoursesViewModel> GetTopCourses();
     }
 }

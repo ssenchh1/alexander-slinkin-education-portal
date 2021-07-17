@@ -1,20 +1,15 @@
 ﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
 
 namespace EduPortal.Domain.Models.Users
 {
-    public class User : IEntity
+    public class User : IdentityUser
     {
-        public int Id { get; set; }
-
         public string Login { get; set; }
-
-        public string Email { get; set; }
-
-        public string PhoneNumber { get; set; }
 
         public string Password { get; set; }
 
-        public List<Skill> Skills { get; set; }
+        public virtual List<Skill> Skills { get; set; }
 
         public string Role { get; set; }
     }

@@ -1,19 +1,24 @@
-﻿using System.Configuration;
+﻿using System.Reflection;
 using EduPortal.Domain.Models;
 using EduPortal.Domain.Models.Materials;
 using EduPortal.Domain.Models.Users;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace EduPortal.Infrastructure.Context
 {
-    public class EducationalPortalContext : DbContext
+    public class EducationalPortalContext : IdentityDbContext<User>
     {
         public EducationalPortalContext()
         {
             Database.EnsureCreated();
         }
 
-        public DbSet<User> Users { get; set; }
+        public EducationalPortalContext(DbContextOptions<EducationalPortalContext> options) : base(options)
+        {
+            Database.EnsureCreated();
+        }
+        
         public DbSet<Mentor> Mentors { get; set; }
         public DbSet<Student> Students { get; set; }
 
@@ -27,8 +32,14 @@ namespace EduPortal.Infrastructure.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var conectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-            optionsBuilder.UseSqlServer(conectionString);
+            //var conectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            //optionsBuilder.UseSqlServer(conectionString);
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

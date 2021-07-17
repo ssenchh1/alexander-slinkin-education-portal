@@ -1,0 +1,53 @@
+﻿@model EduPortal.Domain.PagedList<EduPortal.Domain.Models.Course>
+
+@{
+    Layout = "_Layout1";
+}
+
+<div class="banner">
+    <h2>All courses</h2>
+    <div class="align-content-center">
+        @foreach (var course in Model.Items)
+        {
+            <h3>@course.Name</h3>
+            <h3>@course.Author.Login</h3>
+            <h3>@course.Description</h3>
+            <span class="dropdown-divider"></span>
+        }
+
+        @if (@Model.HasPreviousPage)
+        {
+            <a asp-controller="Courses" asp-action="Catalog" asp-route-page="@Model.CurrentPageNumber+1"
+               class="btn btn-outline-dark">
+                <i class="glyphicon glyphicon-chevron-left"></i>
+                Назад
+            </a>
+        }
+        else
+        {
+            <a asp-controller="Courses" asp-action="Catalog" asp-route-page="@Model.CurrentPageNumber+1"
+               class="btn btn-outline-dark disabled">
+                <i class="glyphicon glyphicon-chevron-left"></i>
+                Назад
+            </a>
+        }
+        
+        @if (Model.HasNextPage)
+        {
+            <a asp-controller="Courses" asp-action="Catalog" asp-route-page="@Model.CurrentPageNumber-1"
+               class="btn btn-outline-dark">
+                Вперед
+                <i class="glyphicon glyphicon-chevron-right"></i>
+            </a>
+        }
+        else
+        {
+            <a asp-controller="Courses" asp-action="Catalog" asp-route-page="@Model.CurrentPageNumber-1"
+               class="btn btn-outline-dark disabled">
+                Вперед
+                <i class="glyphicon glyphicon-chevron-right"></i>
+            </a>
+        }
+        
+    </div>
+</div>

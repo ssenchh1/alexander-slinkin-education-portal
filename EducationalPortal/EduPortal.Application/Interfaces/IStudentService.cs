@@ -1,5 +1,4 @@
-﻿using System;
-using EduPortal.Application.ViewModels;
+﻿using EduPortal.Application.ViewModels;
 
 namespace EduPortal.Application.Interfaces
 {
@@ -7,10 +6,10 @@ namespace EduPortal.Application.Interfaces
     {
         void EnrollCourse(int courseId);
 
-        CourseViewModel GetStudentCourses();
+        CoursesViewModel GetStudentCourses();
 
-        CourseViewModel GetAvailableCourses();
+        CoursesViewModel GetAvailableCourses();
 
-        CourseViewModel GetFinishedCourses();
+        CoursesViewModel GetFinishedCourses();
     }
 }

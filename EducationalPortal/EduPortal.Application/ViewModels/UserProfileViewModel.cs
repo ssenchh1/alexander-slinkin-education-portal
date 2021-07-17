@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace EduPortal.Application.ViewModels
 {
     public class UserProfileViewModel
     {
-        public Dictionary<string, object> Fields { get; set; }
+        public string Login { get; set; }
+
+        public string Email { get; set; }
+
+        public IEnumerable<CourseViewModel> Courses { get; set; }
+
+        public IEnumerable<CourseViewModel> FinishedCourses { get; set; }
     }
 }

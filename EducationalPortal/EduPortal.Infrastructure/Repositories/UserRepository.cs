@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EduPortal.Infrastructure.Repositories
 {
-    public class UserRepository : IRepository<User>
+    public class UserRepository : IUserRepository<User>
     {
         private EducationalPortalContext db;
 
@@ -19,36 +19,39 @@ namespace EduPortal.Infrastructure.Repositories
             db = dbcontext;
         }
 
-        public async Task Add(User obj)
+        public async Task AddAsync(User obj)
         {
             await db.Users.AddAsync(obj);
             await db.SaveChangesAsync();
         }
 
-        public async Task Update(User obj)
+        public async Task UpdateAsync(User obj)
         {
             db.Users.Update(obj);
             await db.SaveChangesAsync();
         }
 
-        public async Task Delete(User obj)
+        public async Task DeleteAsync(User obj)
         {
             db.Remove(obj);
             await db.SaveChangesAsync();
         }
 
-        public async Task<User> GetById(int id)
+        public async Task<User> GetByIdAsync(string id)
         {
             return await db.Users.FirstOrDefaultAsync(u => u.Id == id);
         }
 
-        public IQueryable<User> Get(Expression<Func<User, bool>> filter)
+        public async Task<IEnumerable<User>> Get(Expression<Func<User, bool>> filter = null)
         {
-            IQueryable<User> query = db.Users;
-
-            query = query.Where(filter);
-
-            return query;
+            if (filter != null)
+            {
+                return await db.Users.Where(filter).ToListAsync();
+            }
+            else
+            {
+                return await db.Users.ToListAsync();
+            }
         }
     }
 }
