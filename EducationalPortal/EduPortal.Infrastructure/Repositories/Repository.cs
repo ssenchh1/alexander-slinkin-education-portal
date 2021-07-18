@@ -46,6 +46,18 @@ namespace EduPortal.Infrastructure.Repositories
             return await _dbSet.FirstOrDefaultAsync(i => i.Id == id);
         }
 
+        public async Task<T> GetByIdAsync(int id, string includeProperties)
+        {
+            var result = _dbSet.Where(c => c.Id == id);
+
+            foreach (var property in includeProperties.Split(',', StringSplitOptions.RemoveEmptyEntries))
+            {
+                result = result.Include(property);
+            }
+
+            return await result.FirstOrDefaultAsync();
+        }
+
         public async Task<IEnumerable<T>> GetAsync(Expression<Func<T, bool>> filter = null, string includeProperties = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, int skip = 0, int take = 0)
         {
             IQueryable<T> query = _dbSet;

@@ -2,6 +2,7 @@
 using EduPortal.Application.ViewModels;
 using EduPortal.Domain;
 using EduPortal.Domain.Models;
+using EduPortal.Domain.Models.Users;
 
 namespace EduPortal.Application.Interfaces
 {
@@ -12,5 +13,11 @@ namespace EduPortal.Application.Interfaces
         Task<PagedList<Course>> GetCoursesPaged(int pageNumber, int pageSize);
 
         Task<CoursesViewModel> GetTopCourses();
+
+        Task<CourseViewModel> GetCourseVMById(int id, string include);
+
+        Task<Course> GetCourseById(int id, string include);
+
+        Task AddStudentToCourse(int courseId, User student);
     }
 }

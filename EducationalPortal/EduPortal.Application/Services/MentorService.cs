@@ -69,10 +69,20 @@ namespace EduPortal.Application.Services
             await _materialRepository.AddAsync(video);
         }
 
+        public async Task<IEnumerable<Material>> GetMaterialsAsync()
+        {
+            return await _materialRepository.GetAsync();
+        }
+
+        public async Task<IEnumerable<Material>> GetMaterialsByIdAsync(IEnumerable<int> ids)
+        {
+            return await _materialRepository.GetAsync(m => ids.Contains(m.Id));
+        }
+
         public async Task CreateCourseAsync(CreateCourseViewModel model, string authorId)
         {
             var course = new Course()
-                {Name = model.Name, Description = model.Description, Materials = model.Materials, AuthorId = authorId};
+                {Name = model.Name, Description = model.Description, Materials = model.Materials.ToList(), AuthorId = authorId};
 
             await _courseRepository.AddAsync(course);
         }

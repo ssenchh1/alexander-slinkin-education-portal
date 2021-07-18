@@ -38,6 +38,7 @@ namespace EduPortal.UI.MVC
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<EducationalPortalContext>();
 
+            services.AddTransient<IUserRepository<User>, UserRepository>();
             services.AddTransient<IRepository<Material>, Repository<Material>>();
             services.AddTransient<IMentorService, MentorService>();
             services.AddTransient<IRoleService, RoleService>();

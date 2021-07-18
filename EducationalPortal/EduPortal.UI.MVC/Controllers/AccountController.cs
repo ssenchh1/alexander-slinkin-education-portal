@@ -1,7 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using EduPortal.Application.Interfaces;
 using EduPortal.Application.ViewModels;
+using EduPortal.Domain.Interfaces;
+using EduPortal.Domain.Models;
 using EduPortal.Domain.Models.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

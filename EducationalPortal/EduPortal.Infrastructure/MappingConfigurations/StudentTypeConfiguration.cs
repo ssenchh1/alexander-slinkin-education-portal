@@ -9,6 +9,8 @@ namespace EduPortal.Infrastructure.MappingConfigurations
     {
         public void Configure(EntityTypeBuilder<Student> builder)
         {
+            builder.HasOne(s => s.User).WithOne(u => u.Student).HasForeignKey("User");
+
             builder.HasMany(s => s.Courses)
                 .WithMany(c => c.Students)
                 .UsingEntity<StudentCourse>(

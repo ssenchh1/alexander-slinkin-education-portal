@@ -9,6 +9,8 @@ namespace EduPortal.Application.ViewModels
 
         public string Description { get; set; }
 
-        public virtual List<Material> Materials { get; set; }
+        public List<string> MaterialIds { get; set; }
+
+        public IEnumerable<Material> Materials { get; set; }
     }
 }

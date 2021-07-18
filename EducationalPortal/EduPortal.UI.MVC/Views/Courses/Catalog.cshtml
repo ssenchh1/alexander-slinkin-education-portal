@@ -9,10 +9,10 @@
     <div class="align-content-center">
         @foreach (var course in Model.Items)
         {
-            <h3>@course.Name</h3>
-            <h3>@course.Author.Login</h3>
+            <h3><a asp-controller="Courses" asp-action="Course" asp-route-id="@course.Id">@course.Name</a></h3>
+            <h3>@course.AuthorId</h3>
             <h3>@course.Description</h3>
-            <span class="dropdown-divider"></span>
+            <hr class="border-danger"/>
         }
 
         @if (@Model.HasPreviousPage)
@@ -34,7 +34,7 @@
         
         @if (Model.HasNextPage)
         {
-            <a asp-controller="Courses" asp-action="Catalog" asp-route-page="@Model.CurrentPageNumber-1"
+            <a asp-controller="Courses" asp-action="Catalog" asp-route-page="@(Model.CurrentPageNumber+1)"
                class="btn btn-outline-dark">
                 Вперед
                 <i class="glyphicon glyphicon-chevron-right"></i>
@@ -42,7 +42,7 @@
         }
         else
         {
-            <a asp-controller="Courses" asp-action="Catalog" asp-route-page="@Model.CurrentPageNumber-1"
+            <a asp-controller="Courses" asp-action="Catalog" asp-route-page="@(Model.CurrentPageNumber-1)"
                class="btn btn-outline-dark disabled">
                 Вперед
                 <i class="glyphicon glyphicon-chevron-right"></i>

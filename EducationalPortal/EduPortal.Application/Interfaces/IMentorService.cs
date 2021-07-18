@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using EduPortal.Application.ViewModels;
+using EduPortal.Domain.Models.Materials;
 
 namespace EduPortal.Application.Interfaces
 {
@@ -10,6 +12,10 @@ namespace EduPortal.Application.Interfaces
         Task CreateBookAsync(CreateBookViewModel model, string authorId);
 
         Task CreateVideoAsync(CreateVideoViewModel model, string authorId);
+
+        Task<IEnumerable<Material>> GetMaterialsAsync();
+
+        Task<IEnumerable<Material>> GetMaterialsByIdAsync(IEnumerable<int> ids);
 
         Task CreateCourseAsync(CreateCourseViewModel model, string authorId);
 

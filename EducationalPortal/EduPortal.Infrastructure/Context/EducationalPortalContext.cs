@@ -9,11 +9,6 @@ namespace EduPortal.Infrastructure.Context
 {
     public class EducationalPortalContext : IdentityDbContext<User>
     {
-        public EducationalPortalContext()
-        {
-            Database.EnsureCreated();
-        }
-
         public EducationalPortalContext(DbContextOptions<EducationalPortalContext> options) : base(options)
         {
             Database.EnsureCreated();
