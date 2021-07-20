@@ -11,8 +11,10 @@ using EduPortal.Domain.Models.Materials;
 using EduPortal.Domain.Models.Users;
 using EduPortal.Infrastructure.Context;
 using EduPortal.Infrastructure.Repositories;
+using EduPortal.UI.MVC.Middleware.Extentions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace EduPortal.UI.MVC
 {
@@ -38,17 +40,22 @@ namespace EduPortal.UI.MVC
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<EducationalPortalContext>();
 
-            services.AddTransient<IUserRepository<User>, UserRepository>();
+            services.AddTransient<IGenericUserRepository<User>, UserRepository>();
+            services.AddScoped<IRepository<Skill>, Repository<Skill>>();
+            services.AddTransient<IUserRepository<Mentor>, MentorRepository>();
+            services.AddScoped<IUserRepository<Student>, StudentRepository>();
             services.AddTransient<IRepository<Material>, Repository<Material>>();
             services.AddTransient<IMentorService, MentorService>();
             services.AddTransient<IRoleService, RoleService>();
-            services.AddTransient<ICourseService, CourseService>();
-            services.AddTransient<IRepository<Course>, Repository<Course>>();
+            services.AddScoped<ICourseService, CourseService>();
+            services.AddScoped<IRepository<Course>, Repository<Course>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
+            app.UseExceptionLogging();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

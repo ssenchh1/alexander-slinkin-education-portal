@@ -8,7 +8,8 @@ namespace EduPortal.Infrastructure.MappingConfigurations
     {
         public void Configure(EntityTypeBuilder<Mentor> builder)
         {
-            builder.HasOne(m => m.User).WithOne(u => u.Mentor).HasForeignKey("User");
+            builder.HasKey(m => m.Id);
+            builder.HasOne(m => m.User).WithOne(u => u.Mentor).HasForeignKey("Mentor");
 
             builder.HasMany(m => m.CreatedMaterials)
                 .WithOne(m => m.Author)

@@ -17,6 +17,8 @@ namespace EduPortal.Application.ViewModels
 
         public int Year { get; set; }
 
+        public List<string> SkillsPoints { get; set; }
+
         public List<Skill> ProvidedSkills { get; set; }
     }
 }

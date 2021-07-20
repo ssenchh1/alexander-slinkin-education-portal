@@ -12,5 +12,7 @@ namespace EduPortal.Application.ViewModels
         public string Author { get; set; }
 
         public int StudentsCount { get; set; }
+
+        public string ImagePath { get; set; }
     }
 }

@@ -18,8 +18,14 @@ namespace EduPortal.Domain.Models.Materials
 
         public virtual List<Skill> ProvidedSkills { get; set; }
 
+        public List<SkillMaterial> SkillMaterials { get; set; }
+
         public List<Course> Courses { get; set; }
 
         public List<CourseMaterial> CourseMaterials { get; set; }
+
+        public List<Student> PassedStudents { get; set; }
+
+        //public List<MaterialPassedStudents> MaterialPassedStudents { get; set; }
     }
 }

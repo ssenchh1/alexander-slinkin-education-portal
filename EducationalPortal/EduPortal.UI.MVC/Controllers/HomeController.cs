@@ -21,7 +21,7 @@ namespace EduPortal.UI.MVC.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var courses = await  _courseService.GetCourses();
+            var courses = await  _courseService.GetTopCourses();
 
             return View(courses);
         }

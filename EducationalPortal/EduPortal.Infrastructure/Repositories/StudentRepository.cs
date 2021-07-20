@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using EduPortal.Domain.Interfaces;
@@ -39,6 +40,18 @@ namespace EduPortal.Infrastructure.Repositories
         public async Task<Student> GetByIdAsync(string id)
         {
             return await db.Students.FirstAsync(s => s.Id == id);
+        }
+
+        public async Task<Student> GetByIdAsync(string id, string includeProperties)
+        {
+            var result = db.Students.Where(c => c.Id == id);
+
+            foreach (var property in includeProperties.Split(',', StringSplitOptions.RemoveEmptyEntries))
+            {
+                result = result.Include(property);
+            }
+
+            return await result.FirstOrDefaultAsync();
         }
 
         public Task<IEnumerable<Student>> Get(Expression<Func<Student, bool>> filter = null)

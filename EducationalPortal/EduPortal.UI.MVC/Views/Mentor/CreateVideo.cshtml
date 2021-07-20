@@ -34,7 +34,8 @@
             <input type="text" class="form-control" id="floatingInput" placeholder="Length" asp-for="Length">
         </div>
         <div class="form-floating">
-            <input type="text" class="form-control" id="floatingPassword" placeholder="Provided Skills" asp-for="ProvidedSkills">
+            <select id="skills" multiple name="SkillsPoints" asp-for="SkillsPoints" asp-items="@ViewBag.Skills">
+            </select>
         </div>
         <input hidden value="VideoMaterial" asp-for="Category"/>
 

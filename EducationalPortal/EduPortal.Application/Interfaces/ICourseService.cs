@@ -18,6 +18,16 @@ namespace EduPortal.Application.Interfaces
 
         Task<Course> GetCourseById(int id, string include);
 
-        Task AddStudentToCourse(int courseId, User student);
+        Task AddStudentToCourse(int courseId, Student student);
+
+        Task AddCourseToStudent(int courseId, Student student);
+
+        Task<bool> IsPurchased(int corseId, Student student);
+
+        Task<bool> IsMaterialPassed(int materialId, string userName);
+
+        Task PassMaterial(int materialId, string userName);
+
+        Task AddSkills(int materialId, string userName);
     }
 }

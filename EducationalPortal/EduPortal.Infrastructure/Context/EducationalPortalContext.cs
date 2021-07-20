@@ -34,6 +34,12 @@ namespace EduPortal.Infrastructure.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+            modelBuilder.Entity<Skill>().HasData(
+                new Skill(){Id = 1, Name = "C#"},
+                new Skill(){Id = 2, Name = "Python"},
+                new Skill(){Id = 3, Name = "Program Architecture"});
+
             base.OnModelCreating(modelBuilder);
         }
     }

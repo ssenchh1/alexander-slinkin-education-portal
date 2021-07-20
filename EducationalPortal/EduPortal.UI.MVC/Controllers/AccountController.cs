@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 using EduPortal.Application.Interfaces;
 using EduPortal.Application.ViewModels;
@@ -16,12 +17,16 @@ namespace EduPortal.UI.MVC.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IRoleService _roleService;
+        private readonly IUserRepository<Student> _studentRepository;
+        private readonly IUserRepository<Mentor> _mentorRepository;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IRoleService roleService)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, IRoleService roleService, IUserRepository<Student> studentRepository, IUserRepository<Mentor> mentorRepository)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _roleService = roleService;
+            _studentRepository = studentRepository;
+            _mentorRepository = mentorRepository;
         }
 
         [HttpGet]
@@ -45,12 +50,13 @@ namespace EduPortal.UI.MVC.Controllers
 
             if (ModelState.IsValid)
             {
-                var user = new User() {Email = model.Email, Password = model.Password, UserName = model.Email, Login = model.Login, Role = "Student"};
+                var user = new User() {Email = model.Email, Password = model.Password, UserName = model.Email, Login = model.Login, Role = "Student", ProfilePicture = "default-avatar.jpg"};
 
                 var result = await _userManager.CreateAsync(user, user.Password);
 
                 if (result.Succeeded)
                 {
+                    await _studentRepository.AddAsync(new Student() {Id = user.Id, UserId = user.Id});
                     await _signInManager.SignInAsync(user, model.RememberMe);
                     await _roleService.SetUserRoleAsync(user, "Student");
                     return RedirectToAction("Index", "Home");
@@ -108,6 +114,9 @@ namespace EduPortal.UI.MVC.Controllers
         public async Task<IActionResult> ChangeRole(string id, string oldRole, string newRole)
         {
             var user = await _userManager.FindByIdAsync(id);
+            var student = await _studentRepository.GetByIdAsync(id);
+            var mentor = new Mentor() {Id = user.Id, UserId = user.Id};
+            await _mentorRepository.AddAsync(mentor);
             await _roleService.SetUserRoleAsync(user, newRole);
             await _roleService.UnsetUserRoleAsync(user, oldRole);
             await _signInManager.RefreshSignInAsync(user);

@@ -13,6 +13,8 @@ namespace EduPortal.Domain.Models
 
         public string Description { get; set; }
 
+        public string CourseImage { get; set; }
+
         public string AuthorId { get; set; }
 
         public virtual Mentor Author { get; set; }

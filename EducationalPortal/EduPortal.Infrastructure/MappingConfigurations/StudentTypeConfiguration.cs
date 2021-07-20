@@ -9,7 +9,8 @@ namespace EduPortal.Infrastructure.MappingConfigurations
     {
         public void Configure(EntityTypeBuilder<Student> builder)
         {
-            builder.HasOne(s => s.User).WithOne(u => u.Student).HasForeignKey("User");
+            builder.HasKey(s => s.Id);
+            builder.HasOne(s => s.User).WithOne(u => u.Student).HasForeignKey("Student");
 
             builder.HasMany(s => s.Courses)
                 .WithMany(c => c.Students)
@@ -40,6 +41,17 @@ namespace EduPortal.Infrastructure.MappingConfigurations
                         sc.Property(s => s.FinishedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
                         sc.HasKey(k => new {k.CourseId, k.StudentId});
                     });
+
+            builder.HasMany(s => s.PassedMaterials)
+                .WithMany(m => m.PassedStudents);
+            //.UsingEntity<MaterialPassedStudents>(
+            //    mp => mp.HasOne(m => m.Material)
+            //        .WithMany(m => m.MaterialPassedStudents)
+            //        .HasForeignKey(m => m.MaterialId),
+            //    mp => mp.HasOne(s => s.Student)
+            //        .WithMany(s => s.MaterialPassedStudents)
+            //        .HasForeignKey(s => s.StudentId),
+            //    mp => mp.HasKey(k => new {k.StudentId, k.MaterialId}));
         }
     }
 }

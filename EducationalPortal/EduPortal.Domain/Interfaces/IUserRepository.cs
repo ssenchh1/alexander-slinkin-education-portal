@@ -6,7 +6,7 @@ using EduPortal.Domain.Models.Users;
 
 namespace EduPortal.Domain.Interfaces
 {
-    public interface IUserRepository<T> where T : User
+    public interface IUserRepository<T> where T : IUser
     {
         Task AddAsync(T obj);
 
@@ -15,6 +15,8 @@ namespace EduPortal.Domain.Interfaces
         Task DeleteAsync(T obj);
 
         Task<T> GetByIdAsync(string id);
+
+        Task<T> GetByIdAsync(string id, string includeProperties);
 
         Task<IEnumerable<T>> Get(Expression<Func<T, bool>> filter = null);
     }

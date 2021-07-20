@@ -14,6 +14,8 @@ namespace EduPortal.Application.ViewModels
 
         public string Source { get; set; }
 
+        public List<string> SkillsPoints { get; set; }
+
         public List<Skill> ProvidedSkills { get; set; }
 
         public DateTime Date { get; set; }

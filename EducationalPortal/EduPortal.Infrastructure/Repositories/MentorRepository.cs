@@ -44,6 +44,11 @@ namespace EduPortal.Infrastructure.Repositories
             return await db.Mentors.FirstAsync(m => m.Id == id);
         }
 
+        public Task<Mentor> GetByIdAsync(string id, string includeProperties)
+        {
+            throw new NotImplementedException();
+        }
+
         public IQueryable<Mentor> Get(Expression<Func<Mentor, bool>> filter)
         {
             IQueryable<Mentor> query = db.Mentors;

@@ -164,7 +164,7 @@
                 <div class="panel-body">
                     <div class="col-md-6">
                         <div class="pro-img-details">
-                            <img src="https://via.placeholder.com/550x380/FFB6C1/000000" alt="">
+                            <img src="~/img/@Model.ImagePath" alt="">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -178,13 +178,21 @@
                         </p>
                         <div class="product_meta">
                             <span class="posted_in">
-                                 <strong>Categories:</strong> <a rel="tag" href="#">Jackets</a>, <a rel="tag" href="#">Men</a>, <a rel="tag" href="#">Shirts</a>, <a rel="tag" href="#">T-shirt</a>.
+                                 <strong>Students:</strong> @Model.StudentsCount
                             </span>
                         </div>
-                        @*<div class="m-bot15"> <strong>Price : </strong> <span class="amount-old">$544</span>  <span class="pro-price"> $300.00</span></div>*@
-                        <form asp-controller="Courses" asp-action="PurchaseCourse" asp-route-id="@Model.Id">
-                            <button class="btn btn-danger" type="submit" ><i class="fa fa-shopping-cart"></i> Add to Account</button>
-                        </form>
+                        @if (ViewBag.isPurchased)
+                        {
+                            <form asp-controller="Courses" asp-action="OpenCourse" asp-route-id="@Model.Id">
+                                <button class="btn btn-danger" type="submit" ><i class="fa fa-shopping-cart"></i> Open course</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form asp-controller="Courses" asp-action="PurchaseCourse" asp-route-id="@Model.Id">
+                                <button class="btn btn-danger" type="submit" ><i class="fa fa-shopping-cart"></i> Add to Account</button>
+                            </form>
+                        }
                     </div>
                 </div>
             </section>

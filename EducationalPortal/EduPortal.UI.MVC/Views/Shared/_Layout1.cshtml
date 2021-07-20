@@ -68,7 +68,8 @@
                                             My Account
                                         </a>
                                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                            <li><a class="dropdown-item" href="#">Check Profile</a></li>
+                                            <li><a class="dropdown-item" asp-controller="User" asp-action="MyProfile">Check Profile</a></li>
+                                            <li><a class="dropdown-item" asp-controller="User" asp-action="Courses">My Courses</a></li>
                                             <li>
                                                 <a class="dropdown-item" href="#">
                                                     Create Material &raquo;
@@ -97,8 +98,8 @@
                                             My Account
                                         </a>
                                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                            <li><a class="dropdown-item" href="#">Check Profile</a></li>
-                                            <li><a class="dropdown-item" href="#">My Courses</a></li>
+                                            <li><a class="dropdown-item" asp-controller="User" asp-action="MyProfile">My Profile</a></li>
+                                            <li><a class="dropdown-item" asp-controller="User" asp-action="Courses">My Courses</a></li>
                                             <li><a class="dropdown-item" href="#">Notifications</a></li>
                                             <li><hr class="dropdown-divider"></li>
                                             <li><a class="dropdown-item" asp-action="Logout" asp-controller="Account">Log out</a></li>

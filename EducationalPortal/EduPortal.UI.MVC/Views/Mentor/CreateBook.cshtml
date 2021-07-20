@@ -43,7 +43,8 @@
             <input type="text" class="form-control" id="floatingPassword" placeholder="Year" asp-for="Year">
         </div>
         <div class="form-floating">
-            <input type="text" class="form-control" id="floatingPassword" placeholder="Provided Skills" asp-for="ProvidedSkills">
+            <select id="skills" multiple name="SkillsPoints" asp-for="SkillsPoints" asp-items="@ViewBag.Skills">
+            </select>
         </div>
         <input hidden value="DigitalBook" asp-for="Category"/>
 

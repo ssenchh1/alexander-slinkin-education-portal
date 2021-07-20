@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using EduPortal.Application.ViewModels;
+using EduPortal.Domain.Models;
 using EduPortal.Domain.Models.Materials;
 
 namespace EduPortal.Application.Interfaces
@@ -14,6 +15,8 @@ namespace EduPortal.Application.Interfaces
         Task CreateVideoAsync(CreateVideoViewModel model, string authorId);
 
         Task<IEnumerable<Material>> GetMaterialsAsync();
+
+        Task<IEnumerable<Skill>> GetSkillsAsync();
 
         Task<IEnumerable<Material>> GetMaterialsByIdAsync(IEnumerable<int> ids);
 

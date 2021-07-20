@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EduPortal.Infrastructure.Repositories
 {
-    public class UserRepository : IUserRepository<User>
+    public class UserRepository : IGenericUserRepository<User>
     {
         private EducationalPortalContext db;
 
@@ -52,6 +52,18 @@ namespace EduPortal.Infrastructure.Repositories
             {
                 return await db.Users.ToListAsync();
             }
+        }
+
+        public async Task<User> GetByIdAsync(string id, string includeProperties)
+        {
+            var result = db.Users.Where(c => c.Id == id);
+
+            foreach (var property in includeProperties.Split(',', StringSplitOptions.RemoveEmptyEntries))
+            {
+                result = result.Include(property);
+            }
+
+            return await result.FirstOrDefaultAsync();
         }
     }
 }
