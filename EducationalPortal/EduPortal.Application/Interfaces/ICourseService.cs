@@ -10,7 +10,7 @@ namespace EduPortal.Application.Interfaces
     {
         Task<CoursesViewModel> GetCourses();
 
-        Task<PagedList<Course>> GetCoursesPaged(int pageNumber, int pageSize);
+        Task<PagedList<CourseViewModel>> GetCoursesPaged(int pageNumber, int pageSize);
 
         Task<CoursesViewModel> GetTopCourses();
 
@@ -26,8 +26,14 @@ namespace EduPortal.Application.Interfaces
 
         Task<bool> IsMaterialPassed(int materialId, string userName);
 
+        Task<bool> IsMaterialPassed(int materialId, Student student);
+
         Task PassMaterial(int materialId, string userName);
 
+        Task PassMaterial(int materialId, User user);
+
         Task AddSkills(int materialId, string userName);
+
+        Task AddSkills(int materialId, User user);
     }
 }

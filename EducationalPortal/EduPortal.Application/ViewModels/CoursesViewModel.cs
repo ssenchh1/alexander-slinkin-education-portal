@@ -5,6 +5,6 @@ namespace EduPortal.Application.ViewModels
 {
     public class CoursesViewModel
     {
-        public IEnumerable<Course> Courses { get; set; }
+        public IEnumerable<CourseViewModel> Courses { get; set; }
     }
 }

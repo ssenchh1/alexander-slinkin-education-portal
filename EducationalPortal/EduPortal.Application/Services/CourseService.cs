@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using EduPortal.Application.Interfaces;
 using EduPortal.Application.ViewModels;
@@ -31,22 +32,48 @@ namespace EduPortal.Application.Services
 
         public async Task<CoursesViewModel> GetCourses()
         {
+            List<CourseViewModel> Vms = new List<CourseViewModel>();
+            var courses = await _courseRepository.GetAsync();
+
+            foreach (var course in courses)
+            {
+                Vms.Add(new CourseViewModel(){Author = course.AuthorId, Description = course.Description, Id = course.Id, ImagePath = course.CourseImage, Title = course.Name});
+            }
+
             return new CoursesViewModel()
             {
-                Courses = await _courseRepository.GetAsync()
+                Courses = Vms
             };
         }
 
-        public async Task<PagedList<Course>> GetCoursesPaged(int pageNumber, int pageSize)
+        public async Task<PagedList<CourseViewModel>> GetCoursesPaged(int pageNumber, int pageSize)
         {
-            return await _courseRepository.GetPagedAsync(pageNumber, pageSize, null, "Author,Students");
+            var paged = await _courseRepository.GetPagedAsync(pageNumber, pageSize, null, "Author,Students");
+            var courses = paged.Items;
+
+            List<CourseViewModel> Vms = new List<CourseViewModel>();
+            foreach (var course in courses)
+            {
+                Vms.Add(new CourseViewModel() { Author = course.AuthorId, Description = course.Description, Id = course.Id, ImagePath = course.CourseImage, Title = course.Name });
+            }
+
+            return new PagedList<CourseViewModel>(paged.TotalPages, pageNumber, pageSize, Vms);
         }
 
         public async Task<CoursesViewModel> GetTopCourses()
         {
+            List<CourseViewModel> Vms = new List<CourseViewModel>();
+            var courses = await _courseRepository.GetAsync(null, "Students",
+                c => c.OrderByDescending(c => c.Students.Count), 0, 5);
+
+            foreach (var course in courses)
+            {
+                Vms.Add(new CourseViewModel() { Author = course.AuthorId, Description = course.Description, Id = course.Id, ImagePath = course.CourseImage, Title = course.Name });
+            }
+
             return new CoursesViewModel()
             {
-                Courses = await _courseRepository.GetAsync(null, "Students", c => c.OrderByDescending(c => c.Students.Count), 0, 5)
+                Courses = Vms
             };
         }
 
@@ -97,10 +124,29 @@ namespace EduPortal.Application.Services
             return student.PassedMaterials.Contains(material);
         }
 
+        public async Task<bool> IsMaterialPassed(int materialId, Student student)
+        {
+            var material = await _materialRepository.GetByIdAsync(materialId);
+            return student.PassedMaterials.Contains(material);
+        }
+
         public async Task PassMaterial(int materialId, string userName)
         {
             var material = await _materialRepository.GetByIdAsync(materialId);
             var user = await _userRepository.GetByIdAsync((await _userManager.FindByNameAsync(userName)).Id);
+            var student = await _studentRepository.GetByIdAsync(user.Id, "PassedMaterials");
+
+            if (!student.PassedMaterials.Contains(material))
+            {
+                student.PassedMaterials.Add(material);
+            }
+
+            await _studentRepository.UpdateAsync(student);
+        }
+
+        public async Task PassMaterial(int materialId, User user)
+        {
+            var material = await _materialRepository.GetByIdAsync(materialId);
             var student = await _studentRepository.GetByIdAsync(user.Id, "PassedMaterials");
 
             if (!student.PassedMaterials.Contains(material))
@@ -130,6 +176,31 @@ namespace EduPortal.Application.Services
                 else
                 {
                     user.SkillUsers.Add(new SkillUser(){SkillId = skillMaterial.SkillId, UserId = user.Id, Level = skillMaterial.Level});
+                }
+            }
+
+            await _userRepository.UpdateAsync(user);
+        }
+
+        public async Task AddSkills(int materialId, User user)
+        {
+            user = await _userRepository.GetByIdAsync(user.Id, "SkillUsers");
+            var material = await _materialRepository.GetByIdAsync(materialId, "SkillMaterials");
+
+            foreach (var skillMaterial in material.SkillMaterials)
+            {
+                if (user.SkillUsers.Contains(new SkillUser() { SkillId = skillMaterial.SkillId }))
+                {
+                    if (user.SkillUsers.FirstOrDefault(sk => sk.SkillId == skillMaterial.SkillId).Level <
+                        skillMaterial.Level)
+                    {
+                        user.SkillUsers.FirstOrDefault(sk => sk.SkillId == skillMaterial.SkillId).Level =
+                            skillMaterial.Level;
+                    }
+                }
+                else
+                {
+                    user.SkillUsers.Add(new SkillUser() { SkillId = skillMaterial.SkillId, UserId = user.Id, Level = skillMaterial.Level });
                 }
             }
 
